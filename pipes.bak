@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <time.h>
+
+// Function to evaluate the expression
+int evaluate_expression(const char *expr) {
+    int num1, num2;
+    char op;
+    if (sscanf(expr, "%d %c %d", &num1, &op, &num2) != 3) {
+        return -1; // Error if the format is incorrect
+    }
+    switch (op) {
+        case '+': return num1 + num2;
+        case '-': return num1 - num2;
+        case '*': return num1 * num2;
+        case '/': return (num2 != 0) ? num1 / num2 : -1; // Handle division by zero
+        default: return -1; // Unsupported operator
+    }
+}
+
+void server(int read_fd, int write_fd) {
+    char buffer[1024];
+    read(read_fd, buffer, sizeof(buffer)); // Read the expression
+    int result = evaluate_expression(buffer); // Evaluate the expression
+    snprintf(buffer, sizeof(buffer), "%d", result); // Convert result to string
+    write(write_fd, buffer, strlen(buffer) + 1); // Send result back
+}
+
+void client(int read_fd, int write_fd) {
+    char expression[] = "1 + 1"; // Client sends the expression
+    char buffer[1024];
+    write(write_fd, expression, strlen(expression) + 1);
+    read(read_fd, buffer, sizeof(buffer)); // Receive the result
+    printf("Result from server: %s\n", buffer);
+}
+
+int main() {
+    struct timespec start, end;
+    int pipe1[2], pipe2[2];
+    pipe(pipe1); pipe(pipe2); // Create pipes
+
+    pid_t pid = fork();
+    if (pid == 0) { // Server
+        close(pipe1[1]); close(pipe2[0]);
+        clock_gettime(CLOCK_MONOTONIC, &start);
+        server(pipe1[0], pipe2[1]);
+        clock_gettime(CLOCK_MONOTONIC, &end);
+    } else { // Client
+        close(pipe1[0]); close(pipe2[1]);
+        clock_gettime(CLOCK_MONOTONIC, &start);
+        client(pipe2[0], pipe1[1]);
+        clock_gettime(CLOCK_MONOTONIC, &end);
+    }
+
+    double elapsed_time = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
+    printf("Execution Time: %.6f seconds\n", elapsed_time);
+    return 0;
+}
