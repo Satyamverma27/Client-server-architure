@@ -35,5 +35,29 @@ time ./client
 ```sh
 git clone https://github.com/Satyamverma27/client-server-ipc.git
 cd client-server-ipc
+```
+### 🚀 Conclusion: IPC Methods Performance Analysis
+### 📊 **Average Execution Time for IPC Methods (Simulated Results)**
+
+| **IPC Method**               | **Average Execution Time**   |
+|------------------------------|------------------------------|
+| **Shared Memory (SHM)**       | ~20 µs (microseconds)        |
+| **Message Queues**            | ~100 µs                      |
+| **Pipes (Anonymous/FIFO)**    | ~150 µs                      |
+| **Sockets (TCP/UDP)**         | ~250 µs (TCP), ~180 µs (UDP) |
+Note: These values are estimates and may vary based on system architecture, implementation, and data size. For simple operations like 1 + 1, IPC overhead plays a significant role in the execution time.
+
+### ✅ **Which IPC Method to Choose?**
+
+| **Scenario**                        | **Recommended IPC Method**     |
+|-------------------------------------|--------------------------------|
+| High-speed, large data transfer     | Shared Memory                  |
+| Reliable messaging (structured data)| Message Queues                 |
+| Simple parent-child communication   | Pipes (Anonymous/FIFO)         |
+| Remote process communication        | Sockets (TCP/UDP)              |
+| Cross-platform networking           | Sockets                        |
+| Low-latency, real-time processing   | Shared Memory with Semaphores  |
+
+
 
 
