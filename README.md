@@ -11,13 +11,7 @@ Follow these steps to set up the project on your local machine.
 - Python3 (for evaluating expressions)
 - Linux environment (preferably)
 
-### Clone the Repository
-```sh
-git clone https://github.com/Satyamverma27/client-server-ipc.git
-cd client-server-ipc
-
-
-Execution Time Measurement Guide for Client-Server Architecture (C++ on Linux)
+###Execution Time Measurement Guide for Client-Server Architecture (C++ on Linux)
 This guide covers quick and precise methods to measure the execution time of any client-server architecture in C++ on Linux.
 
 ⚙️ 1. Compilation
@@ -49,5 +43,10 @@ Edit
 real    0m0.456s  → Total elapsed (wall-clock) time
 user    0m0.123s  → CPU time in user mode
 sys     0m0.045s  → CPU time in kernel mode
+
+### Clone the Repository
+```sh
+git clone https://github.com/Satyamverma27/client-server-ipc.git
+cd client-server-ipc
 
 
